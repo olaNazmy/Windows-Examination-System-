@@ -1,0 +1,99 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <RootNamespace>exam_app</RootNamespace>
+    <Nullable>enable</Nullable>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="4.9.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.2">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.2">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="ReportViewerCore.WinForms" Version="15.1.19" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.6" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="DataSets\CrsTopic.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>CrsTopic.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="DataSets\GetExamDetails.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>GetExamDetails.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="DataSets\GetStudentExamsAndGrades.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>GetStudentExamsAndGrades.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="DataSets\StudentsInfoPerTrack.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>StudentsInfoPerTrack.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="DataSets\GetExamDetailsForSTD.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>GetExamDetailsForSTD.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="DataSets\InsCrsStdNum.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>InsCrsStdNum.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="DataSets\CrsTopic.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>CrsTopic.Designer.cs</LastGenOutput>
+    </None>
+    <None Update="DataSets\GetExamDetails.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>GetExamDetails.Designer.cs</LastGenOutput>
+    </None>
+    <None Update="DataSets\GetStudentExamsAndGrades.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>GetStudentExamsAndGrades.Designer.cs</LastGenOutput>
+    </None>
+    <None Update="DataSets\StudentsInfoPerTrack.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>StudentsInfoPerTrack.Designer.cs</LastGenOutput>
+    </None>
+    <None Update="DataSets\GetExamDetailsForSTD.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>GetExamDetailsForSTD.Designer.cs</LastGenOutput>
+    </None>
+    <None Update="DataSets\InsCrsStdNum.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>InsCrsStdNum.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,58 @@
+--- 1- genrate rondom exam
+create Procedure generateExam 
+	@crsId int ,
+	@examName nvarchar(50),
+	@numOfTF int , 
+	@numOfChoose int, 
+	@examDuration int,
+	@examDate date,
+	@examId int output
+as  
+	insert into Exam (Ex_date, Ex_duration, Exam_Name, Course_id) values(@examDate, @examDuration, @examName, @crsId)
+	set @examId =  SCOPE_IDENTITY() -- get last identity value generated
+	insert into Exam_Question (Ex_id, Q_id)
+	SELECT @examId, Q_id FROM
+	(
+		SELECT TOP (@numOfTF) Q_id FROM Question WHERE Course_id = @crsId AND
+			Q_type = 'TorF' ORDER BY NEWID()
+		UNION ALL
+		SELECT TOP (@numOfChoose) Q_id FROM Question WHERE Course_id = @crsId AND 
+			Q_type = 'Choose' ORDER BY NEWID()
+
+	) AS RandomQuestions;
+------------------------------------------------------------------------------------------
+
+-- 2- update exam info
+create Procedure updateExam 
+	@examId int,
+	@examName nvarchar(50),
+	@examDate date,
+	@examDuration int,
+	@crsId int
+as  
+	update Exam set Exam_Name = @examName , Ex_date = @examDate, 
+		Ex_duration = @examDuration, Course_id = @crsId where Ex_id = @examId
+
+--------------------------------------------------------------------------------------------
+3--- regenrate exam questions
+
+create Procedure regenerateExamQuestions
+	@examId int,
+	@numOfTF int , 
+	@numOfChoose int,
+	@crsId int
+as  
+
+	delete from Exam_Question where Ex_id = @examId
+	insert into Exam_Question (Ex_id, Q_id)
+	SELECT @examId, Q_id FROM
+	(
+		SELECT TOP (@numOfTF) Q_id FROM Question WHERE Course_id = @crsId AND
+			Q_type = 'TorF' ORDER BY NEWID()
+		UNION ALL
+		SELECT TOP (@numOfChoose) Q_id FROM Question WHERE Course_id = @crsId AND 
+			Q_type = 'Choose' ORDER BY NEWID()
+
+	) AS RandomQuestions;
+
+----------------------------------------------------------------------------------------

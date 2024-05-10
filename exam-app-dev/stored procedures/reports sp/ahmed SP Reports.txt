@@ -1,0 +1,124 @@
+--1
+CREATE or alter PROC GetTopicsForCourse
+    @Crs_id INT
+AS
+BEGIN
+    BEGIN TRY
+        IF EXISTS (SELECT 1 FROM Course WHERE Crs_id = @Crs_id)
+        BEGIN
+            SELECT Topic_name
+            FROM Topic
+            WHERE Topic_id IN (SELECT Topic_id FROM Course WHERE Crs_id = @Crs_id);
+        END
+        ELSE
+        BEGIN
+            PRINT 'Course does not exist.';
+        END
+    END TRY
+    BEGIN CATCH
+        PRINT 'An error occurred while getting topics for the course.';
+    END CATCH
+END;
+----------------------------------------------------------------------------------------
+2--
+create or alter proc GetExamDetailsForStudent
+	@St_id INT,
+    @Ex_id INT
+as
+select Q.Q_content, Q.Model_answer , ESQ.Std_answer
+from 
+Exam_Std_Question ESQ, Question Q
+where ESQ.Q_id = Q.Q_id
+and ESQ.St_id = @St_id and ESQ.Ex_id = @Ex_id
+
+-------------------------------------------------------------
+3--
+create or alter Procedure GetInsCrsWithStdCount
+	@insId int 
+as
+	SELECT
+        c.Crs_name AS Course_Name,    
+        COUNT(sc.Std_id) AS Number_Of_Students
+    FROM
+        Instructor i
+    INNER JOIN
+        Ins_Courses ic ON i.ins_id = ic.ins_id
+    INNER JOIN
+        Course c ON ic.Crs_id = c.Crs_id
+    LEFT JOIN
+        Student_Courses sc ON c.Crs_id = sc.Crs_id
+	where i.Ins_Id = @insId
+    GROUP BY
+        c.Crs_id, c.Crs_name;
+------------------------------------------------------------------------
+--4
+--	Report that returns the students information according to Department No parameter.
+CREATE OR ALTER PROCEDURE get_Students_By_TrackId
+	@trackId INT
+AS
+BEGIN
+	SELECT T.Tr_name, s.* FROM Track T
+		JOIN Students_InTracks ST
+		ON	T.Tr_id = ST.Track_id
+		JOIN Student S
+		ON ST.Student_Id = S.St_id
+		WHERE st.Track_id = @trackId;
+ END;
+
+
+----------------------------------------------------------------------------------------------------------------
+---5
+--	Report that takes the student ID and returns the grades of the student in all courses.%
+
+
+CREATE OR ALTER PROC GetStudentExamsAndGrades
+    @St_id INT
+AS
+BEGIN
+    BEGIN TRY
+        IF EXISTS (SELECT 1 FROM Student WHERE St_id = @St_id)
+        BEGIN
+            SELECT S.St_fname + ' ' + S.St_lname AS FullName,
+			E.Exam_Name, SE.Grade
+            FROM Exam E
+            JOIN Student_Exams SE ON SE.Exam_id = E.Ex_id
+			JOIN Student S ON S.St_id = SE.Student_id
+            WHERE SE.Student_id = @St_id;
+        END
+        ELSE
+        BEGIN
+            PRINT 'Student does not exist.';
+        END
+    END TRY
+    BEGIN CATCH
+        PRINT 'An error occurred while getting exams and grades for the student.';
+    END CATCH
+END;
+
+----------------------------------------------------------------------------------------------------------------
+
+
+--6	Report that takes exam number and returns the Questions in it and chocies [freeform report]
+CREATE PROCEDURE GetExamDetails
+(
+    @exam_id INT
+)
+AS
+BEGIN
+    SELECT 
+	    ex.Exam_Name AS Exam_Name,
+        q.Q_id AS Question_ID,
+        q.Q_content AS Question_Content,
+        qc.Q_choice AS Question_Choice
+    FROM 
+        Exam ex
+    INNER JOIN 
+        Exam_Question eq ON ex.Ex_id = eq.Ex_id
+    INNER JOIN 
+        Question q ON eq.Q_id = q.Q_id
+    INNER JOIN 
+        Question_choices qc ON q.Q_id = qc.Q_id
+    WHERE 
+        ex.Ex_id =  @exam_id;
+END;
+---------------------------------------------------------------------------------------------------------------------------------
